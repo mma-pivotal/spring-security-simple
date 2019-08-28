@@ -16,25 +16,19 @@
 package com.example;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -50,19 +44,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 	@Bean
 	public OAuth2RestTemplate oauth2RestTemplate(OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
 		return new OAuth2RestTemplate(resource, context);
-	}
-
-	@Bean
-	public AuthoritiesExtractor authoritiesExtractor(OAuth2RestOperations template) {
-		return map -> {
-			String url = (String) map.get("organizations_url");
-			@SuppressWarnings("unchecked")
-			List<Map<String, Object>> orgs = template.getForObject(url, List.class);
-			if (orgs.stream().anyMatch(org -> "spring-projects".equals(org.get("login")))) {
-				return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
-			}
-			throw new BadCredentialsException("Not in Spring Team");
-		};
 	}
 
 	@RequestMapping("/user")

@@ -1,0 +1,13 @@
+security:
+  oauth2:
+    client:
+      client-id: acme
+      client-secret: acmesecret
+      access-token-uri: http://localhost:8080/oauth/token
+      user-authorization-uri: http://localhost:8080/oauth/authorize
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+logging:
+  level:
+    org.springframework.security: DEBUG
