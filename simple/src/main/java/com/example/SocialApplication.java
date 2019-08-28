@@ -13,33 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @SpringBootApplication
-@EnableAuthorizationServer
-@EnableWebSecurity
-public class SocialApplication extends WebSecurityConfigurerAdapter {
+public class SocialApplication {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
-		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**","/error**").permitAll().anyRequest()
-				.authenticated().and()
-				.addFilterAt(new CustomBasicAuthenticationFilter(authenticationManager()),BasicAuthenticationFilter.class);
-		// @formatter:on
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(SocialApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(SocialApplication.class, args);
+    }
 }
