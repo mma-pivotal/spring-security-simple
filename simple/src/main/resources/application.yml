@@ -2,7 +2,7 @@ security:
   oauth2:
     client:
       client-id: acme
-      client-secret: acmesecret
+      client-secret: "{noop}acmesecret"
       scope: read,write
       auto-approve-scopes: '.*'
 
